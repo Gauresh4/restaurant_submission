@@ -5,8 +5,6 @@ dotenv.config({ path: "./config.env" });
 
 const { PORT, DB_URL } = process.env;
 const app = express();
-// const serverConfig = require("./configs/server.config");
-// const dbConfig = require("./configs/db.config");
 
 app.use(express.json());
 mongoose.connect(DB_URL);
