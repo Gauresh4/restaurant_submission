@@ -15,7 +15,7 @@ db.on("error", () => {
 });
 
 db.once("open", () => {
-  console.log("Connected to database");
+  console.log("Connected to DB");
 });
 
 require("./routes/restaurant.route")(app);
