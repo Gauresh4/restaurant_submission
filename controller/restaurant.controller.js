@@ -78,7 +78,6 @@ exports.getRestaurantCategories = async (req, res) => {
 
 exports.getRestaurantsByCategoryName = async (req, res) => {
   try {
-    // This API returns details of all the restaurants of a particular category in the database.
     const category = req.params.category;
     const restuarants = await Restaurant.find({ category });
     res.status(200).send(restuarants);
@@ -119,6 +118,66 @@ exports.getRestaurantsByRating = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       message: "Some error occured while fetching the Restaurant",
+    });
+  }
+};
+
+exports.updateRestaurant = async (req, res) => {
+  try {
+    if (!req.body)
+      return res.status(400).send({ message: "Restaurant Data is required" });
+
+    const id = req.params.id;
+    const restaurant = await Restaurant.findByIdAndUpdate(id, req.body);
+    if (!restaurant)
+      return res
+        .status(200)
+        .send({ message: "No Restaurant found for given ID" });
+
+    res.status(200).send({ message: "Restaurant updated successfully." });
+  } catch (error) {
+    res.status(500).send({
+      message: "Some error occured while fetching the Restaurant",
+    });
+  }
+};
+
+exports.deleteRestaurant = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const restaurant = await Restaurant.findByIdAndDelete(id);
+
+    res.status(200).send({
+      restaurant,
+      message: "Restaurant deleted successfully.",
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Some error occured while deleting the Restaurant",
+    });
+  }
+};
+
+exports.deleteRestaurants = async (req, res) => {
+  try {
+    const deletedResult = await Restaurant.deleteMany({});
+
+    if (deletedResult.deletedCount === 0) {
+      return res
+        .status(200)
+        .send({ restaurants: null, message: "No restaurants deleted." });
+    }
+
+    res.status(200).send({
+      restaurants: {
+        acknowledged: deletedResult.acknowledged,
+        deletedCount: deletedResult.deletedCount,
+      },
+      message: "Restaurants deleted successfully.",
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Some error occured while deleting the Restaurant",
     });
   }
 };

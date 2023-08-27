@@ -16,4 +16,7 @@ module.exports = function (app) {
     "/api/restaurant/rating/:rating",
     restaurantController.getRestaurantsByRating
   );
+  app.put("/api/restaurant/:id", restaurantController.updateRestaurant);
+  app.delete("/api/restaurant/:id", restaurantController.deleteRestaurant);
+  app.delete("/api/restaurant", restaurantController.deleteRestaurants);
 };
